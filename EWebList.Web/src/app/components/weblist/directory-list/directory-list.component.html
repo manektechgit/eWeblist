@@ -1,0 +1,144 @@
+<div class="main">
+  <app-header></app-header>
+  <section class="connecting_businesses connecting_businesses_innner">
+    <div class="container">
+      <div class="row">
+        <ul class="d-flex head_breadcrumbs">
+          <li>Return to the</li>
+          <li><a [routerLink]="['/category-list']" title="Directory Index"><i class="fa fa-angle-left"></i> Directory
+              Index </a></li>
+        </ul>
+        <div class="col-12 m-auto text-center category_input">
+          <app-searchbar (searchedData)="SearchDirectory($event)" #appSearchBar>
+          </app-searchbar>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="listing_main">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="d-flex align-items-center justify-content-between">
+            <ul class="breadcrumbs">
+              <li><a [routerLink]="['']" title="Home">Home</a></li>
+              <li *ngIf="!subCategoryData && categoryName!=='all'"><span>{{categoryData?.Name}}</span></li>
+              <li *ngIf="subCategoryData && categoryName!=='all'"><a
+                  [routerLink]="[ '/category', categoryData?.SlugName]">{{categoryData?.Name}}</a></li>
+              <li *ngIf="subCategoryData && categoryName!=='all'"><span>{{subCategoryData?.Name}}</span></li>
+            </ul>
+            <div class="page_sorting">
+              <h3>Per page</h3>
+              <select class="form-control custom-select" [(ngModel)]="showTotalRecords" (change)="IncreasePaging()">
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+              </select>
+            </div>
+          </div>
+          <!-- Directory Start -->
+          <div class="list_box" *ngFor="let directory of directories;let i=index">
+            <div class="premium-icon" *ngIf="directory.IsPremium">
+              <i class="fa fa-star" aria-hidden="true"></i>
+            </div>
+            <div class="list_box_inn d-md-flex justify-content-between" (click)="InsertDirectoryClick(directory)">
+              <div class="logo_box d-md-flex flex-md-wrap justify-content-md-end">
+                <div class="img_box">
+                  <img src="{{directoryImageServerPath+directory.Logo}}" alt="{{directory.BusinessName}}" />
+                </div>
+                <div class="list_time d-md-flex flex-md-wrap align-items-md-end">
+                  <h4>{{directory.CreatedDate | date : 'dd MMM'}}</h4>
+                </div>
+              </div>
+              <div class="content_box">
+                <div class="content_inner">
+                  <h2>{{directory.ListingHeadline}}</h2>
+                  <p>{{directory.Description}}</p>
+                </div>
+                <div class="links_box">
+                  <ul class="tag_txt list-unstyled d-flex flex-wrap align-items-center">
+                    <ng-container *ngFor="let keywords of directory?.Keywords?.trim().split(',')">
+                      <li *ngIf="keywords !=''">{{keywords}}</li>
+                    </ng-container>
+                  </ul>
+                </div>
+                <div class="links_box d-md-flex align-items-center">
+                  <div class="tag_txt">
+                    <span>{{directory.BusinessName}}</span>
+                  </div>
+                </div>
+                <div class="links_box d-md-flex align-items-center">
+                  <div class="links">
+                    <a href="{{directory.WebsiteUrl}}" target="_blank" title="{{directory.BusinessName}}"
+                      class="blue_link">{{directory.WebsiteUrl}}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="directories?.length == 0" class="list_box" style="text-align: center;">
+            No Result Found
+          </div>
+          <!-- Directory End -->
+          <!-- Pagination Start -->
+          <div class="text-center" *ngIf="directories?.length > 0">
+            <nav aria-label="navigation">
+              <ul class="basic-pagination pagination justify-content-center mt-3 mt-md-4 mt-lg-5">
+                <li class="page-item" [ngClass]="{'aria-disabled': startIndex===0}">
+                  <a class="page-link border-0 bg-transparent" (click)="PrevPage()">PREV</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="javascript:void(0);">
+                    {{startIndex+1}} -
+                    {{(endIndex > directories[0]?.recordsTotal ? directories[0]?.recordsTotal : endIndex)}} of
+                    {{(directories[0]?.recordsTotal)}}</a></li>
+                <li class="page-item" [ngClass]="{'aria-disabled': endIndex>=directories[0]?.recordsTotal}">
+                  <a class="page-link text-reset border-0 bg-transparent" (click)="NextPage()">NEXT </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <!-- Pagination End -->
+        </div>
+        <div class="col-lg-4 list_right">
+          <div class="sidebar_box blue_side_box">
+            <h3>Get Listed!</h3>
+            <p>Submit your site now and get quality traffic from trusted web directory!</p>
+            <a [routerLink]="['/submit-site']" title="Submit your site" class="btn submit_btn"><i
+                class="fa fa-plus"></i>Submit your site</a>
+          </div>
+          <div class="sidebar_box" *ngIf="subCategories && categoryName!=='all'">
+            <h3 *ngIf="searchCondition?.categoryName" (click)="SetSubCategoryFilter(0)">
+              {{searchCondition?.categoryName}}
+            </h3>
+            <ul>
+              <li>
+                <a href="javascript:void(0);" title="All"
+                  [ngStyle]="{'color': this.filterSubCategoryId===0?' #0456fe':''}"
+                  [routerLink]="[ '/category', categoryName]">
+                  All
+                </a>
+              </li>
+              <li *ngFor="let subCategory of subCategories">
+                <a href="javascript:void(0);" title="{{subCategory.Name}}"
+                  [ngStyle]="{'color': subCategory.SubCategoryId===this.filterSubCategoryId?' #0456fe':''}"
+                  [routerLink]="[ '/category', categoryData?.SlugName,subCategory.SlugName ]">
+                  {{subCategory.Name}}
+                  <span>{{subCategory.TotalDirectory}}</span>
+                </a>
+              </li>
+            </ul>
+            <a [routerLink]="['/category-list']" title="View all" class="btn view_btn">view all</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-footer></app-footer>
+</div>

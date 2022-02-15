@@ -1,0 +1,7 @@
+.centered-profile-pic {
+  position: absolute;
+  top: 7%;
+  left: 5.5%;
+  color: white;
+  cursor: pointer;
+}

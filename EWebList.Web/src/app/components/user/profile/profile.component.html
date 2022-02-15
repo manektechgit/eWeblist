@@ -1,0 +1,172 @@
+<div class="container-fluid">
+  <div class="row top-bar">
+    <div class="col-lg-8">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="breadcrumbs">
+          <li><a [routerLink]="['/user']" title="Dashboard">Dashboard</a></li>
+          <li><span>Profile</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- View Div -->
+  <div class="row" [ngStyle]="{'display': mode==='default'? 'block': 'none' }">
+    <div class="col-lg-8">
+      <div class="card admin-profile bg-light shadow mb-4">
+        <div class="d-sm-flex justify-content-between">
+          <div class="profile_edit_icon">
+            <a href="javascript:void(0);" (click)="SetMode('edit')">
+              <i class="fas fa-pencil-alt"></i>
+            </a></div>
+          <div class="user_img">
+            <img src="/assets/images/user-icon.png" alt="{{userMaster?.RegistrationName}}"
+              *ngIf="!userMaster?.ProfilePicture">
+
+            <img src="{{userImageServerPath+userMaster?.ProfilePicture}}" alt="{{userMaster?.RegistrationName}}"
+              *ngIf="userMaster?.ProfilePicture">
+          </div>
+          <div class="userinfo profile-view">
+            <div class="row">
+              <div class="col-12">
+                <h3>{{userMaster?.RegistrationName}}</h3>
+                <!-- <span class="location"><i class="fas fa-map-marker-alt"></i> New York, USA</span> -->
+              </div>
+
+              <div class="col-xl-6">
+                <label>Email</label>
+                <span class="view_list">
+                  <h3>{{userMaster?.Email}}</h3>
+                </span>
+              </div>
+
+              <div class="col-xl-6">
+                <label>Phone</label>
+                <span class="view_list">{{userMaster?.CountryCode}} {{userMaster?.ContactNo}}</span>
+              </div>
+
+              <div class="col-xl-6">
+                <label>Password</label>
+                <span class="view_list password_tag">**********</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- View Div End-->
+  <div class="row" [ngStyle]="{'display': mode=='edit'? 'block': 'none' }">
+    <div class="col-lg-8">
+      <div class="card admin-profile bg-light shadow mb-4">
+        <div class="d-sm-flex justify-content-between">
+          <div class="user_img">
+            <input type="file" accept="image/*" #file (change)="handleFileInput($event)" style="display: none;">
+            <img src="/assets/images/user-icon.png" alt="{{userMaster?.RegistrationName}}" (click)="file.click()"
+              *ngIf="!UserProfileImage && !userMaster?.ProfilePicture">
+
+            <img src="{{userImageServerPath+userMaster?.ProfilePicture}}" alt="{{userMaster?.RegistrationName}}"
+              *ngIf="userMaster?.ProfilePicture && !UserProfileImage" (click)="file.click()">
+
+            <img [src]="UserProfileImage?.fileAsBase64" alt="{{userMaster?.RegistrationName}}" (click)="file.click()"
+              *ngIf="UserProfileImage">
+              <div class="centered-profile-pic" (click)="file.click()">Change</div>
+          </div>
+          <div class="userinfo">
+            <form class="form_common_style" (ngSubmit)="onSubmit()" name="userMasterForm" [formGroup]="userMasterForm">
+              <div class="row">
+                <div class="col-12">
+                  <label>Profile name </label>
+                  <input type="text" formControlName="RegistrationName" class="form-control form-input"
+                    placeholder="Enter your name">
+                  <div class="text-danger"
+                    *ngIf="f.RegistrationName.invalid && (f.RegistrationName.dirty || f.RegistrationName.touched || isSubmit)">
+                    <span *ngIf="f.RegistrationName.errors.required">
+                      Please enter your name
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-xl-6">
+                  <label>Email address</label>
+                  <input type="text" formControlName="Email" class="form-control form-input"
+                    placeholder="Enter your email address">
+                  <div class="text-danger" *ngIf="f.Email.invalid && (f.Email.dirty || f.Email.touched || isSubmit)">
+                    <span *ngIf="f.Email.errors.required">
+                      Please enter your email
+                    </span>
+                    <span *ngIf="f.Email.errors?.pattern">
+                      Please provide a valid email address
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-xl-6">
+                  <label>Phone number</label>
+                  <div class="input_group">
+                    <div class="input-group-prepend">
+                      <!-- <select class="form-control form-input custom-select" formControlName="CountryCode"
+                        style="width: 125px;">
+                        <option [ngValue]=null>Select Code</option>
+                        <option *ngFor="let countryCode of countryCodes" [ngValue]="countryCode.CountryCode">
+                          {{countryCode.Name}}
+                        </option>
+                      </select> -->
+                      <app-country-code style="width: 84px;padding: 15px;" class="form-control form-input"
+                        [selectedCountryCode]="selectedCountryCode" [countryCodes]="countryCodes"
+                        (changedCountryCode)="changeSelectedCountryCode($event)">
+                      </app-country-code>
+                      <input type="text" formControlName="ContactNo" class="form-control form-input"
+                        placeholder="Enter your number">
+                    </div>
+                  </div>
+                  <div class="text-danger" style="margin-left: 80px;"
+                    *ngIf="f.ContactNo.invalid && (f.ContactNo.dirty || f.ContactNo.touched || isSubmit)">
+                    <span *ngIf="f.ContactNo.errors.required">
+                      Please enter your number
+                    </span>
+                  </div>
+                  <div class="text-danger"
+                    *ngIf="f.CountryCode.invalid && (f.CountryCode.dirty || f.CountryCode.touched || isSubmit)">
+                    <span *ngIf="f.CountryCode.errors?.required">
+                      Invalid Code
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-xl-6">
+                  <label>New password</label>
+                  <input type="password" formControlName="Password" class="form-control form-input" placeholder="Password">
+                  <app-password-strength class="password-policy-admin" *ngIf="f.Password.errors?.pattern || f.Password.errors?.maxlength"
+                    [passwordToCheck]="this.userMasterForm.value.Password">
+                  </app-password-strength>
+                  <!-- <div class="text-danger" *ngIf="f.Password.errors?.pattern">
+                    <span>
+                      Password must contain 1 Capital,1 Small,1 Number,
+                      1 special and 8 character long
+                    </span>
+                  </div> -->
+                </div>
+
+                <div class="col-xl-6">
+                  <label>confirm password</label>
+                  <input type="password" formControlName="ConfirmPassword" class="form-control form-input"
+                    placeholder="Password">
+                  <div class="text-danger" *ngIf="this.userMasterForm.hasError('passwordNotMatch')">
+                    <span *ngIf="userMasterForm.hasError('passwordNotMatch')">Password and confirm password not
+                      matched</span>
+                  </div>
+                </div>
+
+                <div class="col-12 text-md-right">
+                  <button class="btn submit-btn" style="margin: 3px;" type="button" (click)="SetMode('default')">Cancel</button>
+                  <button class="btn submit-btn" style="margin: 3px;" type="submit">Update detail</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

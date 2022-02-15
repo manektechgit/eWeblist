@@ -1,0 +1,51 @@
+<div class="container-fluid">
+  <div class="row top-bar">
+    <div class="col-lg-12">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="breadcrumbs">
+          <li><a [routerLink]="['/user']" title="Home">Dashboard</a></li>
+          <li><span>Category</span></li>
+        </ul>
+        <div class="col-lg-6 filter_type">
+          <ul>
+            <li *ngFor="let alphabet of alphabets">
+              <a [ngClass]="{'active': selectedAlphabet===alphabet}" title="{{alphabet}}" href="javascript:void(0);"
+                (click)="GetSetSelectedCategory(alphabet)">{{alphabet}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="category_list_middle">
+        <div class="category_list_row" *ngFor="let category of categorySubCategoryVM?.categoryVM">
+          <div class="container">
+            <div class="row category_toggle">
+              <div class="col-12">
+                <div class="list_title" (click)="StoreAndNavigateToListCategory(category)">
+                  <span class="tag">{{category.Name}} <span>{{category.TotalDirectory}}</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="row category_toggle_open">
+              <ng-container *ngFor="let subcategory of categorySubCategoryVM?.subCategoryVM">
+                <div class="col-xl-3 col-lg-4 col-md-6" *ngIf="subcategory.CategoryId===category.CategoryId">
+                  <div class="category_list_block">
+                    <a href="javascript:void(0);" (click)="StoreAndNavigateToListSubCategory(category,subcategory)">
+                      <span class="title">{{subcategory.Name}}</span>
+                      <span class="count">{{subcategory.TotalDirectory}}</span>
+                    </a>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

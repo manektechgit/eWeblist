@@ -1,0 +1,208 @@
+<div class="container-fluid">
+  <div class="row top-bar align-items-center">
+    <div class="col-lg-8">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="breadcrumbs">
+          <li><a [routerLink]="['/user']" title="Dashboard">Dashboard</a></li>
+          <li><a [routerLink]="['/user/my-site']" title="Directory">Directory</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-4 list_right">
+      <a class="btn_sub full_bt" [routerLink]="['/user/submit-site']"><i class="fas fa-plus"></i> Submit New site</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12" *ngIf="isAuthorizeForEdit">
+      <div div class="list_box" *ngIf="this.mode=='edit'">
+        <div class="list_box_inn d-md-flex justify-content-between">
+          <div class="logo_box d-md-flex flex-md-wrap justify-content-md-end">
+            <div class="img_box">
+              <img src="{{directoryImageServerPath+directory?.Logo}}" alt="{{directory?.BusinessName}}" />
+            </div>
+            <div class="list_time d-md-flex flex-md-wrap align-items-md-end">
+              <h4>{{directory?.CreatedDate | date : 'dd MMM'}}</h4>
+            </div>
+          </div>
+          <div class="content_box">
+            <div class="content_inner">
+              <h2>{{directory?.ListingHeadline}}</h2>
+              <p>{{directory?.Description}}</p>
+            </div>
+            <div class="links_box">
+              <ul class="tag_txt list-unstyled d-flex flex-wrap align-items-center">
+                <ng-container *ngFor="let keywords of directory?.Keywords?.trim().split(',')">
+                  <li *ngIf="keywords !=''">{{keywords}}</li>
+                </ng-container>
+              </ul>
+            </div>
+            <div class="links_box d-md-flex align-items-center">
+              <div class="tag_txt">
+                <span>{{directory?.BusinessName}}</span>
+              </div>
+            </div>
+            <div class="links_box d-md-flex align-items-center">
+              <div class="links">
+                <a href="{{directory?.WebsiteUrl}}" target="_blank" title="{{directory?.BusinessName}}"
+                  class="blue_link">{{directory?.WebsiteUrl}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contct_form directory_form">
+        <form class="contact_form form_common_style" (ngSubmit)="onSubmit()" name="directoryForm"
+          [formGroup]="directoryForm">
+          <div class="row">
+            <div class="col-xl-12">
+              <label>Listing Headline <small>(max 100 characters) </small><span>*</span></label>
+              <div class="input_group">
+                <input type="text" formControlName="ListingHeadline" class="form-control form-input"
+                  placeholder="Enter here directory title" [attr.maxLength]="maxLength100">
+                  <!-- <span class="form-text text-muted character_count"><code>{{maxLength100 - d.ListingHeadline.value.length}}</code></span> -->
+              </div>
+              <div class="text-danger"
+                *ngIf="d.ListingHeadline.invalid && (d.ListingHeadline.dirty || d.ListingHeadline.touched || isSubmit)">
+                <span *ngIf="d.ListingHeadline.errors.required">
+                  Enter listing headline
+                </span>
+                <span *ngIf="d.ListingHeadline.errors.maxlength">
+                  Listing headline can be max 100 characters long
+                </span>
+              </div>
+            </div>
+            <div class="upload_main d-md-flex justify-content-xl-between align-items-xl-end col-xl-12">
+              <div class="upload_left">
+                <div class="img_box">
+                  <img src="{{directoryImageServerPath+directory?.Logo}}" alt="rental-logo"
+                    *ngIf="!directoryLogo && this.mode=='edit'" />
+                  <img src="/assets/images/upload-empty-snapshot.jpg" alt="rental-logo"
+                    *ngIf="!directoryLogo && this.mode=='insert'" />
+                  <img [src]="directoryLogo?.fileAsBase64" alt="rental-logo" *ngIf="directoryLogo" />
+                  <a href="javascript:void(0);" class="delete_img" title="Remove" *ngIf="directoryLogo"
+                    (click)="RemoveLogo()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="upload_right">
+                <label>Upload your Company Logo (optional but recommended) <span>*</span></label>
+                <div class="custom-file form-input">
+                  <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile" appDragNDrop
+                    placeholder="Drag and drop files here" (change)="handleFileInput($event)"
+                    (fileDropped)="handleDragAndDrop($event)">
+                  <label class="custom-file-label" for="validatedCustomFile">Drag and drop files here</label>
+                </div>
+                <div class="text-danger"
+                  *ngIf="d.DirectoryImage.invalid && (d.DirectoryImage.dirty || d.DirectoryImage.touched || isSubmit)">
+                  <span *ngIf="d.DirectoryImage.errors.required">
+                    Please upload logo
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <label>Select a Main Category</label>
+              <select class="form-control form-input custom-select" formControlName="CategoryId" #category
+                (change)='onCategoryChange()'>
+                <option [value]=null>Select category</option>
+                <option *ngFor="let category of categories" [value]="category.CategoryId">
+                  {{category.Name}}
+                </option>
+              </select>
+              <div class="text-danger"
+                *ngIf="d.CategoryId.invalid && (d.CategoryId.dirty || d.CategoryId.touched || isSubmit)">
+                <span *ngIf="d.CategoryId.errors.required">
+                  Please select category
+                </span>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <label>Select a Sub Category</label>
+              <select class="form-control form-input custom-select" formControlName="SubCategoryId">
+                <option [ngValue]=null>Select sub category</option>
+                <option *ngFor="let subCategory of subCategories" [ngValue]="subCategory.SubCategoryId">
+                  {{subCategory.Name}}
+                </option>
+              </select>
+              <div class="text-danger"
+                *ngIf="d.SubCategoryId.invalid && (d.SubCategoryId.dirty || d.SubCategoryId.touched || isSubmit)">
+                <span *ngIf="d.SubCategoryId.errors.required">
+                  Please select sub category
+                </span>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <label>Business Name <span>*</span></label>
+              <input type="text" formControlName="BusinessName" class="form-control form-input"
+                placeholder="Enter here business name">
+              <div class="text-danger"
+                *ngIf="d.BusinessName.invalid && (d.BusinessName.dirty || d.BusinessName.touched || isSubmit)">
+                <span *ngIf="d.BusinessName.errors.required">
+                  Enter business name
+                </span>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <label>Website Url <span>*</span></label>
+              <input type="text" formControlName="WebsiteUrl" class="form-control form-input"
+                placeholder="Enter here website url" #wesiteurl>
+              <div class="text-danger"
+                *ngIf="d.WebsiteUrl.invalid && (d.WebsiteUrl.dirty || d.WebsiteUrl.touched || isSubmit)">
+                <span *ngIf="d.WebsiteUrl.errors.required">
+                  Enter website url
+                </span>
+                <span *ngIf="d.WebsiteUrl.errors?.pattern">
+                  Url should begin with http:// or https://
+                </span>
+              </div>
+            </div>
+            <div class="col-xl-12">
+              <label>Keywords (separated by commas-optional but highly recommended) <small>(max 100 characters) </small><span>*</span></label>
+              <input type="text" formControlName="Keywords" class="form-control form-input" [attr.maxLength]="maxLength100">
+              <!-- <span class="form-text text-muted character_count_description"><code>{{maxLength100-d.Keywords.value.length}}</code></span> -->
+              <div class="text-danger"
+                *ngIf="d.Keywords.invalid && (d.Keywords.dirty || d.Keywords.touched || isSubmit)">
+                <span *ngIf="d.Keywords.errors.required">
+                  Enter keywords
+                </span>
+                <span *ngIf="d.Keywords.errors.maxlength">
+                  Keywords can be max 100 characters long
+                </span>
+              </div>
+            </div>
+            <div class="col-xl-12">
+              <label>Description Of Business <small>(max 500 characters) </small><span>*</span></label>
+              <textarea formControlName="Description" class="form-control form-input" rows="5" id="comment"
+                placeholder="Type here description about directory" [attr.maxLength]="maxLength500"></textarea>
+                <span class="form-text text-muted character_count_description" *ngIf="d.Description.value !=''"><code>{{maxLength500-d.Description.value.length}} character remaining</code></span>
+              <div class="text-danger"
+                *ngIf="d.Description.invalid && (d.Description.dirty || d.Description.touched || isSubmit)">
+                <span *ngIf="d.Description.errors.required">
+                  Enter description of business
+                </span>
+                <span *ngIf="d.Description.errors.maxlength">
+                  Description can be max 500 characters long
+                </span>
+              </div>
+            </div>
+            <div class="col-xl-12 text-md-right">
+              <button class="btn submit-btn" type="submit">Save and View</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-12" *ngIf="!isAuthorizeForEdit">
+      <div class="error-template">
+        <h1>
+          Oops!</h1>
+        <h2>
+          401 Not Authorized</h2>
+        <div class="error-details">
+          Sorry, You are not authorize!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,126 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="brand-logo">
+      <a class="navbar-brand" [routerLink]="['/user']">
+        <img src="/assets/images/logo.png" alt="">
+        <span class="mobi_logo"><img src="/assets/images/logo.png" alt=""></span>
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+      [ngClass]="isHeaderShow ? 'active' : ''">
+      <span class="navbar-toggler-icon" (click)="ToggleHeader()">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <div class="head_search">
+      <form>
+        <input type="text" [(ngModel)]="searchText"  name="searchText" class="form-control bg-light border-0 small"
+          placeholder="Search here" (keyup.enter)="SetSearchDataAndNavigate()">
+      </form>
+    </div>
+
+    <div class="header_right">
+      <ul class="nav-ul ml-auto">
+
+        <!-- Nav Item - Messages -->
+        <!-- <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-envelope fa-fw"></i>
+          </a>
+          <div class="dropdown-list alerts-enter message-center dropdown-menu dropdown-menu-right shadow"
+            aria-labelledby="messagesDropdown">
+            <h6 class="dropdown-header">
+              Message Center
+            </h6>
+            <ul>
+              <li>
+                <a href="#">
+                  <span class="icon online"><img src="/assets/images/user.jpg" alt=""></span>
+                  <span class="info">
+                    Lorem ipsum dolor sit amet consectetur..
+                    <span class="date">Emily Fowler · 58m</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li> -->
+        <!-- Nav Item - Alerts -->
+        <!-- <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-bell fa-fw"></i>
+          </a>
+          <div class="dropdown-list alerts-enter dropdown-menu dropdown-menu-right shadow "
+            aria-labelledby="alertsDropdown">
+            <h6 class="dropdown-header">
+              Alerts Center
+            </h6>
+            <ul>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-bell fa-fw"></i></span>
+                  <span class="info">
+                    <span class="date">APR 20, 2020</span>
+                    Lorem ipsum dolor sit amet consectetur..
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-bell fa-fw"></i></span>
+                  <span class="info">
+                    <span class="date">APR 20, 2020</span>
+                    Lorem ipsum dolor sit amet consectetur..
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-bell fa-fw"></i></span>
+                  <span class="info">
+                    <span class="date">APR 20, 2020</span>
+                    Lorem ipsum dolor sit amet consectetur..
+                  </span>
+                </a>
+              </li>
+            </ul>
+
+          </div>
+        </li> -->
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <img class="rounded-circle" src="/assets/images/user-icon.png" *ngIf="!currentLoginUser?.ProfilePicture">
+            <img class="rounded-circle" src="{{userImageServerPath+currentLoginUser?.ProfilePicture}}"
+              *ngIf="currentLoginUser?.ProfilePicture">
+            <span class="mr-2">{{currentLoginUser?.RegistrationName}}</span>
+          </a>
+          <!-- Dropdown - User Information -->
+          <div class="dropdown-menu user-toggle dropdown-menu-right shadow" aria-labelledby="userDropdown">
+            <a class="dropdown-item" [routerLink]="['profile']" routerLinkActive="select">
+              <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+              Profile
+            </a>
+            <a class="dropdown-item" [routerLink]="['setting']" routerLinkActive="select">
+              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+              Settings
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="javascript:void(0);" class="dropdown-item" data-target="#logoutModal" (click)="Logout()">
+              <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

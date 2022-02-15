@@ -1,0 +1,12 @@
+/EWebList.API/wwwroot
+/EWebList.API/bin
+/EWebList.API/obj
+/EWebList.Business/bin
+/EWebList.Business/obj
+/EWebList.Common/bin
+/EWebList.Common/obj
+/EWebList.WindowService/EWebList.WindowService/EWebList.WindowService/bin
+/EWebList.WindowService/EWebList.WindowService/EWebList.WindowService/obj
+/.vs
+/EWebList.DataRepository/bin
+/EWebList.DataRepository/obj

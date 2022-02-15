@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <div class="row top-bar align-items-center">
+    <div class="col-lg-8">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="breadcrumbs">
+          <li><span>Dashboard</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-4 list_right">
+      <a class="btn_sub full_bt" [routerLink]="['/user/submit-site']"><i class="fas fa-plus"></i> Submit New site</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mb-4">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h2>Total Clicks</h2>
+          <div class="dropdown edit-delete">
+            <a href="javascript:vois(0)" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fas fa-ellipsis-h"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow">
+              <a class="dropdown-item" href="javascript:void(0);" (click)="FilterDataTotalClicks('week')">Weekly</a>
+              <a class="dropdown-item" href="javascript:void(0);" (click)="FilterDataTotalClicks('month')">Monthly</a>
+            </div>
+          </div>
+        </div>
+        <div class="chart-bar">
+          <canvas baseChart [datasets]="lineChartDataTotalClicks" [labels]="lineChartLabelsTotalClicks"
+            [colors]="lineChartColors" [options]="lineChartOptions" [chartType]="lineChartType">
+          </canvas>
+        </div>
+      </div>
+      <div class="card shadow mb-4" *ngIf="currentLoginUser?.RoleId==1">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h2>Total No of submission</h2>
+          <div class="dropdown edit-delete">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fas fa-ellipsis-h"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow">
+              <a class="dropdown-item" href="javascript:void(0);" (click)="FilterDataTotalSubmission('week')">Weekly</a>
+              <a class="dropdown-item" href="javascript:void(0);"
+                (click)="FilterDataTotalSubmission('month')">Monthly</a>
+            </div>
+          </div>
+        </div>
+        <div class="chart-bar">
+          <canvas baseChart [datasets]="lineChartDataTotalPublish" [labels]="lineChartLabelsTotalPublish"
+            [colors]="lineChartColors" [options]="lineChartOptions" [chartType]="lineChartType">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+<div class="container-fluid">
+  <div class="row top-bar">
+    <div class="col-lg-8">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="breadcrumbs">
+          <li><a [routerLink]="['/user']" title="Home">Dashboard</a></li>
+          <li><span>Directory</span></li>
+        </ul>
+        <div class="page_sorting filter_category">
+          <select class="form-control custom-select" [(ngModel)]="SelectedCategoryId"
+            (change)="FilterDirectoryByCategory()">
+            <option selected="" value="0">FILTER BY CATEGORY</option>
+            <option *ngFor="let category of categories" value="{{category.CategoryId}}">{{category.Name}}</option>
+          </select>
+        </div>
+        <div class="page_sorting">
+          <h3>Per page</h3>
+          <select class="form-control custom-select" [(ngModel)]="showTotalRecords" (change)="IncreasePaging()">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+            <option value="35">35</option>
+            <option value="40">40</option>
+            <option value="45">45</option>
+            <option value="50">50</option>
+            <option value="55">55</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 list_right">
+      <a class="btn_sub full_bt" [routerLink]="['/user/submit-site']">
+        <i class="fas fa-plus">
+        </i> Submit New site</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="list_box" *ngFor="let directory of directories;let i=index">
+        <!-- Directory Start -->
+        <div class="premium-icon-edit" *ngIf="directory.IsPremium">
+          <i class="fa fa-star" aria-hidden="true"></i>
+        </div>
+        <div class="list_box_inn d-md-flex justify-content-between">
+          <div class="dropdown edit-delete">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fas fa-ellipsis-h"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow">
+              <a class="dropdown-item" href="javascript:void(0);"
+                (click)="EditDirectory(directory.DirectoryId,directory.BusinessName)">Edit</a>
+              <a class="dropdown-item" href="javascript:void(0);" (click)="DeleteDirectory(directory)">Delete</a>
+            </div>
+          </div>
+          <div class="logo_box d-md-flex flex-md-wrap justify-content-md-start">
+            <div class="img_box">
+              <img src="{{directoryImageServerPath+directory.Logo}}" alt="{{directory.BusinessName}}" />
+            </div>
+            <div class="list_time d-md-flex flex-md-wrap align-items-md-end">
+              <h4>{{directory.CreatedDate | date : 'dd MMM'}}</h4>
+            </div>
+          </div>
+          <div class="content_box" (click)="InsertDirectoryClick(directory)">
+            <div class="content_inner">
+              <h2>{{directory.ListingHeadline}}</h2>
+              <p>{{directory.Description}}</p>
+            </div>
+            <div class="links_box">
+              <ul class="tag_txt list-unstyled d-flex flex-wrap align-items-center">
+                <ng-container *ngFor="let keywords of directory?.Keywords?.trim().split(',')">
+                  <li *ngIf="keywords !=''">{{keywords}}</li>
+                </ng-container>
+              </ul>
+            </div>
+            <div class="links_box d-md-flex align-items-center">
+              <div class="tag_txt">
+                <span>{{directory.BusinessName}}</span>
+              </div>
+            </div>
+            <div class="links_box d-md-flex align-items-center">
+              <div class="links">
+                <a href="{{directory.WebsiteUrl}}" target="_blank" title="{{directory.BusinessName}}"
+                  class="blue_link">{{directory.WebsiteUrl}}</a>
+              </div>
+              <div class="links">
+                <a *ngIf="directory.IsPremium" href="javascript:void(0);" class="red_link">Expiring On :
+                  {{directory?.ExpireDate | date : 'dd MMM yyyy'}}</a>
+
+                <ng-container *ngIf="!directory.IsPremium">
+                  <a href="javascript:void(0);" class="blue_link" ngbTooltip="Click to upgrade to premium"
+                    (click)="Upgrade(directory.DirectoryId)" *ngIf="this.pageName=='my-site'">Upgrade To
+                    Premium</a>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Directory End -->
+      </div>
+      <div class="text-center" *ngIf="directories">
+        <nav aria-label="navigation">
+          <ul class="basic-pagination pagination justify-content-center mt-3 mt-md-4 mt-lg-5">
+            <li class="page-item" [ngClass]="{'aria-disabled': startIndex===0}">
+              <a class="page-link border-0 bg-transparent" (click)="PrevPage()">PREV</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="javascript:void(0);">
+                {{startIndex+1}} -
+                {{(endIndex > directories[0]?.recordsTotal ? directories[0]?.recordsTotal : endIndex)}} of
+                {{(directories[0]?.recordsTotal)}}</a></li>
+            <li class="page-item" [ngClass]="{'aria-disabled': endIndex >= directories[0]?.recordsTotal}">
+              <a class="page-link text-reset border-0 bg-transparent" (click)="NextPage()">NEXT </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="col-lg-4 list_right">
+      <div class="sidebar_box mt-0" *ngIf="leftCategories?.length > 0">
+        <h3 class="sidebar_toggle" (click)="ToggleSideBar()">{{siteLabel}}</h3>
+        <div class="sidebar_toggle_open" [ngClass]="isMyWesitesOpen ? 'show' : ''"
+          [ngStyle]="{'display': isMyWesitesOpen ? 'none' : 'block'}">
+          <ul>
+            <li *ngFor="let category of leftCategories">
+              <a href="javascript:void(0);" title="{{category.Name}}"
+                *ngIf="category.TotalDirectory > 0">{{category.Name}} <span>{{category.TotalDirectory}}</span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

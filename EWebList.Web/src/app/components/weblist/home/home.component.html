@@ -1,0 +1,105 @@
+<div class="main">
+  <app-header></app-header>
+  <section class="connecting_businesses">
+    <div class="in_middle">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 offset-lg-1 col-lg-10 text-center">
+            <h1>Connecting Buyers to Sellers</h1>
+            <p>Get qualified traffic from quality links directory</p>
+            <app-searchbar></app-searchbar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="cetegory_section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 offset-lg-1 col-lg-10 text-center title-top">
+          <h2>To get quality traffic, <a [routerLink]="['/submit-site']">Submit your site now</a></h2>
+          <p>*Get quality traffic from trusted web directory!</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 cetegory_box" *ngFor="let category of categories">
+          <a [routerLink]="[ '/category', category?.SlugName ]">
+            <span class="icon"><img src="{{categoryImageServerPath+category.IconName}}" alt=""></span>
+            <div><span class="number">{{category.TotalDirectory}}</span>{{category.Name}}</div>
+          </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center view_btn_out">
+          <a class="view_btn" [routerLink]="['/category-list']">View all category</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center title-top">
+          <h2>Newsletter</h2>
+          <p>Subscribe to the newsletter and receive the latest information on a regular basis!</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="offset-md-1 col-md-10 text-center">
+          <ul>
+            <li>
+              <span class="icon"><img src="/assets/images/newsletter-icon1.png" alt=""></span>
+              <span>{{totalDirectory}} <span class="text">LISTING</span></span>
+            </li>
+            <li>
+              <span class="icon"><img src="/assets/images/newsletter-icon2.png" alt=""></span>
+              <span>{{totalCategory}} <span class="text">Category</span></span>
+            </li>
+            <li>
+              <span class="icon"><img src="/assets/images/newsletter-icon3.png" alt=""></span>
+              <span>{{totalUsers}} <span class="text">Active User</span></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <form (ngSubmit)="onSubmit()" name="emailSubsriptionForm" [formGroup]="emailSubsriptionForm">
+            <div class="search_bar">
+              <input type="search" formControlName="Email" class="form-control"
+                placeholder="Enter your email address here">
+              <input type="submit" value="Subscribe">
+              <div class="text-danger" *ngIf="f.Email.invalid && (f.Email.dirty || f.Email.touched || isSubmit)">
+                <span *ngIf="f.Email.errors.required">
+                  Please provide an email address
+                </span>
+                <span *ngIf="f.Email.errors?.pattern">
+                  Please provide an valid email address
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="get_listed">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="in_middle">
+            <h2>Get Listed!, <span>Submit Your Website! </span></h2>
+            <div class="btn_right">
+              <a class="btn_sub" [routerLink]="['/submit-site']">Submit your site now!</a>
+              <!-- <span>Or</span>
+              <a class="btn_sub" [routerLink]="['/contact-us']">Suggest a category</a> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-footer></app-footer>
+</div>

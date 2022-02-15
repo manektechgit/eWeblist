@@ -1,0 +1,9 @@
+Run AS Administrator Developer Command promt 2019
+F:\ManekTech\Project\ewebList\source\EWebList.WindowService\EWebList.WindowService\EWebList.WindowService\bin\Debug
+InstallUtil  /i  EWebList.WindowService.exe
+InstallUtil.exe “EWebList.WindowService.exe”
+InstallUtil  /u  EWebList.WindowService.exe
+
+
+InstallUtil /u F:\ManekTech\Project\ewebList\source\EWebList.WindowService\EWebList.WindowService\EWebList.WindowService\bin\Debug\EWebList.WindowService.exe
+InstallUtil.exe /u “EWebList.WindowService.exe”

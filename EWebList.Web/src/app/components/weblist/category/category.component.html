@@ -1,0 +1,69 @@
+<div class="main">
+  <app-header></app-header>
+  <section class="connecting_businesses connecting_businesses_innner">
+    <div class="container-fluid">
+      <div class="row">
+
+        <ul class="d-flex head_breadcrumbs">
+          <li>Return to the</li>
+          <li><a [routerLink]="['/category-list']" title="Directory Index"><i class="fa fa-angle-left"></i> Directory Index </a></li>
+        </ul>
+
+        <div class="col-12 m-auto text-center category_input">
+          <app-searchbar></app-searchbar>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="listing_main">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex align-items-center justify-content-between filter_flex">
+            <ul class="breadcrumbs">
+              <li><a [routerLink]="['']" title="Home">Home</a></li>
+              <li><span>Category</span></li>
+            </ul>
+            <div class="filter_type">
+              <ul>
+                <li *ngFor="let alphabet of alphabets">
+                  <a [ngClass]="{'active': selectedAlphabet===alphabet}" title="{{alphabet}}" href="javascript:void(0);"
+                    (click)="GetSetSelectedCategory(alphabet)">{{alphabet}}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category_list_middle">
+    <div class="category_list_row" *ngFor="let category of categorySubCategoryVM?.categoryVM">
+      <div class="container">
+        <div class="row category_toggle">
+          <div class="col-12">
+            <div class="list_title">
+              <a class="tag"  [routerLink]="[ '/category', category.SlugName]">{{category.Name}} <span>{{category.TotalDirectory}}</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="row category_toggle_open">
+          <ng-container *ngFor="let subcategory of categorySubCategoryVM?.subCategoryVM">
+            <div class="col-xl-3 col-lg-4 col-md-6" *ngIf="subcategory.CategoryId===category.CategoryId">
+              <div class="category_list_block">
+                <a  [routerLink]="[ '/category', category.SlugName,subcategory.SlugName]">
+                  <span class="title">{{subcategory.Name}}</span>
+                  <span class="count">{{subcategory.TotalDirectory}}</span>
+                </a>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-footer></app-footer>
+</div>

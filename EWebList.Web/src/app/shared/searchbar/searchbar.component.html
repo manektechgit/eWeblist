@@ -1,0 +1,13 @@
+<div class="general-shadow">
+  <div class="form-group">
+    <select class="form-control" [(ngModel)]="selectedCategoryId" #SearchBar>
+      <option selected="" value="0">FILTER BY CATEGORY</option>
+      <option *ngFor="let category of categories" value="{{category.CategoryId}}">{{category.Name}}</option>
+    </select>
+    <div class="search_bar">
+      <input type="search" class="form-control" placeholder="Search for anything..."
+        [(ngModel)]="searchText" (keyup.enter)="SetSelectedText();SetSearchDataAndNavigate()">
+      <button type="button" (click)="SetSelectedText();SetSearchDataAndNavigate();"><i class="fa fa-search"></i></button>
+    </div>
+  </div>
+</div>

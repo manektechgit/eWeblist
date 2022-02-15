@@ -1,0 +1,52 @@
+<div class="container-fluid">
+  <div class="row top-bar">
+    <div class="col-lg-8">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="breadcrumbs">
+          <li><a [routerLink]="['/user']" title="Home">Dashboard</a></li>
+          <li><span>Category Master</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-4 list_right" style="padding-left: 110px;" *ngIf="mode=='default'" >
+      <button class="btn_sub full_bt" (click)="SetInsertMode()"><i class="fas fa-plus"></i> Add New Category</button>
+    </div>
+  </div>
+  <div class="row" *ngIf="mode=='default'">
+    <div class="col-12">
+      <div class="card shadow mb-4">
+        <input type="text"  class="form-control"
+        placeholder="Search.." style="width: 250px;margin: 5px;" [(ngModel)]="searchText">
+        <div style="height:320px;overflow-y: auto;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Icon</th>
+                <th scope="col">Active</th>
+                <th scope="col">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let category of categories | filterCategoryBySubCategory:searchText; let i=index">
+                <th style="width: 50px;">{{i+1}}</th>
+                <td>{{category.Name}}</td>
+                <td style="width: 100px;">
+                  <img src="{{categoryImageServerPath+category.IconName}}" style="height: 30px;width: 30px;"
+                    *ngIf="category.IconName !==''">
+                </td>
+                <td>{{category.IsActive}}</td>
+                <td style="width: 70px;" (click)="SetEditMode(category)"><i
+                      class="fas fa-pencil-alt"></i></td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="mode=='insert' || mode=='edit'">
+    <app-add-edit [selectedCategory]="selectedCategory" [addEditMode]="mode" (mode)="SetDefaultMode($event)">
+    </app-add-edit>
+  </ng-container>
+</div>

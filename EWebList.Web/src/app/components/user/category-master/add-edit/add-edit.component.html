@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-lg-10">
+    <div class="card admin-profile bg-light shadow mb-4">
+      <div class="d-sm-flex justify-content-between">
+        <div class="userinfo">
+          <form class="form_common_style" (ngSubmit)="onSubmit()" name="categoryMasterForm"
+            [formGroup]="categoryMasterForm">
+            <div class="row">
+              <div class="col-12">
+                <label>Name<span>*</span></label>
+                <input type="text" formControlName="Name" class="form-control form-input"
+                  placeholder="Enter category name">
+                <div class="text-danger" *ngIf="f.Name.invalid && (f.Name.dirty || f.Name.touched || isSubmit)">
+                  <span *ngIf="f.Name.errors.required">
+                    Please enter category name
+                  </span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="upload_right">
+                  <label>Upload your Category Image</label>
+                  <div class="custom-file form-input">
+                    <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile"
+                      placeholder="Upload image" (change)="handleFileInput($event)">
+                    <label class="custom-file-label" for="validatedCustomFile">Upload image</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="customCheck1" formControlName="IsActive">
+                  <label class="custom-control-label" for="customCheck1">Active</label>
+                </div>
+              </div>
+
+              <div class="col-12 mt-3">
+                <button class="btn submit-btn" style="margin: 3px;" type="button" (click)="onSaveOrCancel('cancel')">Cancel</button> &nbsp;
+                <button class="btn submit-btn" style="margin: 3px;" type="submit">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

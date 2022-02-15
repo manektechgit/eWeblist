@@ -1,0 +1,299 @@
+<div class="main">
+  <app-header></app-header>
+  <section class="connecting_businesses connecting_businesses_innner">
+    <div class="container">
+      <div class="row">
+        <ul class="d-flex head_breadcrumbs">
+          <li>Return to the</li>
+          <li><a [routerLink]="['/category-list']" title="Directory Index"><i class="fa fa-angle-left"></i> Directory
+              Index
+            </a></li>
+        </ul>
+        <div class="col-12 m-auto text-center category_input">
+          <app-searchbar></app-searchbar>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="contact_page">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="d-flex align-items-center justify-content-between">
+            <ul class="breadcrumbs">
+              <li><a [routerLink]="['']" title="Home">Home</a></li>
+              <li><span>submit-your-site</span></li>
+            </ul>
+          </div>
+          <div class="contct_form">
+            <form class="contact_form form_common_style" (ngSubmit)="onSubmit()" name="directoryForm"
+              [formGroup]="directoryForm">
+              <div class="container">
+                <div class="row">
+                  <div class="row">
+                    <div class="col-xl-6" formGroupName="directoryMaster">
+                      <label>Select a Main Category</label>
+                      <select class="form-control form-input custom-select" formControlName="CategoryId" #category
+                        (change)='onCategoryChange()'>
+                        <option [value]=null>Select category</option>
+                        <option *ngFor="let category of categories" [value]="+category.CategoryId">
+                          {{category.Name}}
+                        </option>
+                      </select>
+                      <div class="text-danger"
+                        *ngIf="d.CategoryId.invalid && (d.CategoryId.dirty || d.CategoryId.touched || isSubmit)">
+                        <span *ngIf="d.CategoryId.errors.required">
+                          Please select category
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-xl-6" formGroupName="directoryMaster">
+                      <label>Select a Sub Category</label>
+                      <select class="form-control form-input custom-select" formControlName="SubCategoryId">
+                        <option [ngValue]=null>Select sub category</option>
+                        <option *ngFor="let subCategory of subCategories" [ngValue]="subCategory.SubCategoryId">
+                          {{subCategory.Name}}
+                        </option>
+                      </select>
+                      <div class="text-danger"
+                        *ngIf="d.SubCategoryId.invalid && (d.SubCategoryId.dirty || d.SubCategoryId.touched || isSubmit)">
+                        <span *ngIf="d.SubCategoryId.errors.required">
+                          Please select sub category
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-xl-6" formGroupName="directoryMaster">
+                      <label>Business Name <span>*</span></label>
+                      <input type="text" formControlName="BusinessName" class="form-control form-input">
+                      <div class="text-danger"
+                        *ngIf="d.BusinessName.invalid && (d.BusinessName.dirty || d.BusinessName.touched || isSubmit)">
+                        <span *ngIf="d.BusinessName.errors.required">
+                          Enter business name
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-xl-6" formGroupName="directoryMaster">
+                      <label>Website Url <span>*</span></label>
+                      <input type="text" formControlName="WebsiteUrl" class="form-control form-input" #wesiteurl>
+                      <div class="text-danger"
+                        *ngIf="d.WebsiteUrl.invalid && (d.WebsiteUrl.dirty || d.WebsiteUrl.touched || isSubmit)">
+                        <span *ngIf="d.WebsiteUrl.errors.required">
+                          Enter website url
+                        </span>
+                        <span *ngIf="d.WebsiteUrl.errors?.pattern">
+                          Url should begin with http:// or https://
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12" formGroupName="directoryMaster">
+                      <div class="upload_left">
+                        <div class="img_box">
+                          <img src="/assets/images/upload-empty-snapshot.jpg" alt="rental-logo"
+                            *ngIf="!directoryLogo" />
+                          <img [src]="directoryLogo?.fileAsBase64" alt="rental-logo" *ngIf="directoryLogo" />
+                          <a href="javascript:void(0);" class="delete_img" title="Remove" *ngIf="directoryLogo"
+                            (click)="RemoveLogo()">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                          </a>
+                        </div>
+                      </div>
+                      <label>Upload your Company Logo (optional but recommended) <span>*</span></label>
+                      <div class="custom-file form-input">
+                        <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile"
+                          placeholder="Drag and drop files here" (change)="handleFileInput($event)" appDragNDrop
+                          (fileDropped)="handleDragAndDrop($event)">
+                        <label class="custom-file-label" for="validatedCustomFile">Drag and drop files here</label>
+                      </div>
+                      <div class="text-danger"
+                        *ngIf="d.DirectoryImage.invalid && (d.DirectoryImage.dirty || d.DirectoryImage.touched || isSubmit)">
+                        <span *ngIf="d.DirectoryImage.errors.required">
+                          Please upload logo
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-xl-6" formGroupName="userMaster">
+                      <label>Title <span>*</span></label>
+                      <select class="form-control form-input custom-select" formControlName="Title">
+                        <option [ngValue]=null>Select title</option>
+                        <option *ngFor="let title of titles" [ngValue]="title.ItemValue">
+                          {{title.ItemName}}
+                        </option>
+                      </select>
+                      <div class="text-danger"
+                        *ngIf="u.Title.invalid && (u.Title.dirty || u.Title.touched || isSubmit)">
+                        <span *ngIf="u.Title.errors.required">
+                          Please select title
+                        </span>
+                        <span *ngIf="u.Title.errors.maxlength">
+                          Title should not more than 5 characters
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-xl-6" formGroupName="userMaster">
+                      <label>Business Owner / Registrant Name <span>*</span></label>
+                      <div class="input_group">
+                        <input type="text" formControlName="RegistrationName" class="form-control form-input">
+                        <span class="info_icon" id="test" data-toggle="tooltip"
+                          ngbTooltip="This information will NOT be displayed on your listing on eWeblist"></span>
+                      </div>
+                      <div class="text-danger"
+                        *ngIf="u.RegistrationName.invalid && (u.RegistrationName.dirty || u.RegistrationName.touched || isSubmit)">
+                        <span *ngIf="u.RegistrationName.errors.required">
+                          Enter business owner / registrant name
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-xl-6" formGroupName="userMaster">
+                      <label>Contact Phone Number <span>*</span></label>
+                      <div class="input_group">
+                        <div class="input-group-prepend">
+                          <input type="hidden" formControlName="CountryCode">
+                          <app-country-code style="width: 84px;padding: 15px;" class="form-control form-input"
+                            [selectedCountryCode]="selectedCountryCode" [countryCodes]="countryCodes"
+                            (changedCountryCode)="changeSelectedCountryCode($event)">
+                          </app-country-code>
+                          <input type="text" formControlName="ContactNo" class="form-control form-input">
+                          <!-- <span class="info_icon" id="test" data-toggle="tooltip"
+                          ngbTooltip="This information will NOT be displayed on your listing on eWeblist"></span> -->
+                        </div>
+                      </div>
+                      <div class="text-danger" style="margin-left: 74px;"
+                        *ngIf="u.ContactNo.invalid && (u.ContactNo.dirty || u.ContactNo.touched || isSubmit)">
+                        <span *ngIf="u.ContactNo.errors.required">
+                          Enter contact number
+                        </span>
+                        <!-- <span *ngIf="u.ContactNo.errors?.pattern">
+                          Enter valid contact number
+                        </span> -->
+                      </div>
+                      <div class="text-danger"
+                        *ngIf="u.CountryCode.invalid && (u.CountryCode.dirty || u.CountryCode.touched || isSubmit)">
+                        <span *ngIf="u.CountryCode.errors?.required">
+                          Invalid Code
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-xl-6" formGroupName="userMaster">
+                      <label>Email Address <span>*</span></label>
+                      <div class="input_group">
+                        <input type="text" formControlName="Email" class="form-control form-input">
+                        <span class="info_icon" data-toggle="tooltip"
+                          ngbTooltip="This information will NOT be displayed on your listing on eWeblist"></span>
+                      </div>
+                      <div class="text-danger"
+                        *ngIf="u.Email.invalid && (u.Email.dirty || u.Email.touched || isSubmit)">
+                        <span *ngIf="u.Email.errors.required">
+                          Enter email address
+                        </span>
+                        <span *ngIf="u.Email.errors?.pattern">
+                          Please provide a valid email address
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12" formGroupName="directoryMaster">
+                      <label>Listing Headline <small>(max 100 characters) </small><span>*</span></label>
+                      <div class="input_group">
+                        <input type="text" formControlName="ListingHeadline" class="form-control form-input" [attr.maxLength]="maxLength100">
+                        <!-- <span class="form-text text-muted character_count"><code>{{maxLength100 - d.ListingHeadline.value.length}}</code></span> -->
+                      </div>
+                      <div class="text-danger"
+                        *ngIf="d.ListingHeadline.invalid && (d.ListingHeadline.dirty || d.ListingHeadline.touched || isSubmit)">
+                        <span *ngIf="d.ListingHeadline.errors.required">
+                          Enter listing headline
+                        </span>
+                        <span *ngIf="d.ListingHeadline.errors.maxlength">
+                          Listing headline can be max 100 characters long
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-xl-12" formGroupName="directoryMaster">
+                      <label>Keywords (separated by commas-optional but highly recommended) <small>(max 100 characters) </small><span>*</span></label>
+                      <div class="input_group">
+                        <input type="text" formControlName="Keywords" class="form-control form-input" [attr.maxLength]="maxLength100">
+                        <!-- <span class="form-text text-muted character_count"><code>{{maxLength100 - d.Keywords.value.length}}</code></span> -->
+                      </div>
+                      <div class="text-danger"
+                        *ngIf="d.Keywords.invalid && (d.Keywords.dirty || d.Keywords.touched || isSubmit)">
+                        <span *ngIf="d.Keywords.errors.required">
+                          Enter keywords
+                        </span>
+                        <span *ngIf="d.Keywords.errors.maxlength">
+                          Keywords can be max 100 characters long
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-12" formGroupName="directoryMaster">
+                      <label>Description Of Business <small>(max 500 characters) </small><span>*</span></label>
+                      <textarea formControlName="Description" class="form-control form-input" rows="5" id="comment"
+                        placeholder="Type your message here" [attr.maxLength]="maxLength500"></textarea>
+                        <span class="form-text text-muted character_count_description" *ngIf="d.Description.value !=''"><code>{{maxLength500-d.Description.value.length}} character remaining</code></span>
+                      <div class="text-danger"
+                        *ngIf="d.Description.invalid && (d.Description.dirty || d.Description.touched || isSubmit)">
+                        <span *ngIf="d.Description.errors.required">
+                          Enter description of business
+                        </span>
+                        <span *ngIf="d.Description.errors.maxlength">
+                          Description can be max 500 characters long
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-xl-6">
+                    </div>
+                    <div class="col-xl-6 text-md-right">
+                      <button class="btn submit-btn" type="submit">Submit my listing</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-4 list_right">
+          <div class="sidebar_box blue_side_box contact_side_box">
+            <h3>Get In Touch</h3>
+            <p>Contact the staff at eWebList Directory Listings</p>
+            <a href="mailto:support@eweblist.com" title="Mail us">support@eweblist.com</a>
+            <ul class="d-flex social_icons">
+              <li><a title="facebook" target="_blank" href="https://www.facebook.com/EWebList-104260782059607"><i class="fab fa-facebook-f"></i></a>
+              </li>
+              <li><a title="instagram" target="_blank" href="https://www.instagram.com/eweblist/"><i class="fab fa-instagram"></i></a>
+              </li>
+              <li><a title="twitter" target="_blank" href="https://twitter.com/eweblist"><i class="fab fa-twitter"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #newUser let-modal>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body text-center"> <img src="https://img.icons8.com/bubbles/200/000000/trophy.png">
+            <h4>CONGRATULATIONS!</h4>
+            <p>Your site is added successfully to eWeblist! We have send you and email for further with instruction</p>
+            <button class="btn btn-out btn-square continue" (click)="RedirectToLogin()">CONTINUE TO LOGIN</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #alreadyauser let-modal>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body text-center"> <img src="https://img.icons8.com/bubbles/200/000000/trophy.png">
+            <!-- <h4>CONGRATULATIONS!</h4> -->
+            <p>This site we cannot add to eWeblist ! Your previous site is added successfully to eWeblist! We have send
+              you and email for further with instruction</p>
+            <button class="btn btn-out btn-square continue" (click)="RedirectToLogin()">CONTINUE TO LOGIN</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </section>
+  <app-footer></app-footer>
+</div>

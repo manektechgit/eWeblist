@@ -1,0 +1,49 @@
+<div class="main login_main">
+  <app-header></app-header>
+  <section class="login_page">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5 mx-auto">
+          <form class="form-signin" (ngSubmit)="onSubmit()" name="loginForm" [formGroup]="loginForm">
+            <div class="form-label-group">
+              <label for="inputEmail">Email address</label>
+              <input type="email" name="Email" formControlName="Email" id="inputEmail" class="form-control"
+                placeholder="Email address">
+              <div class="text-danger" *ngIf="f.Email.invalid && (f.Email.dirty || f.Email.touched || isSubmit)">
+                <span *ngIf="f.Email.errors.required">
+                  Please enter a email
+                </span>
+                <span *ngIf="f.Email.errors?.pattern">
+                  Please provide a valid email address
+                </span>
+              </div>
+            </div>
+
+            <div class="form-label-group">
+              <label for="inputPassword">Password</label>
+              <input type="password" formControlName="Password" name="Password" id="inputPassword" class="form-control"
+                placeholder="Password" required>
+              <div class="text-danger"
+                *ngIf="f.Password.invalid && (f.Password.dirty || f.Password.touched || isSubmit)">
+                <span *ngIf="f.Password.errors.required">
+                  Please enter a password
+                </span>
+              </div>
+            </div>
+
+            <div class="custom-control">
+              <div class="custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customCheck1" formControlName="Remember">
+                <label class="custom-control-label" for="customCheck1">Remember Me</label>
+              </div>
+              <a class="forgot_password" [routerLink]="['/forget-password']">forgot password?</a>
+            </div>
+
+            <button class=" btn_sub" type="submit">Log in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,46 @@
+<div class="main">
+  <app-header></app-header>
+  <section class="connecting_businesses connecting_businesses_innner">
+    <div class="container">
+      <div class="row">
+
+        <ul class="d-flex head_breadcrumbs">
+          <li>Return to the</li>
+          <li><a [routerLink]="['/category-list']" title="Directory Index"><i class="fa fa-angle-left"></i> Directory Index </a></li>
+        </ul>
+
+        <div class="col-12 m-auto text-center category_input">
+          <app-searchbar></app-searchbar>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="contact_page">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="d-flex align-items-center justify-content-between">
+            <ul class="breadcrumbs">
+              <li><a [routerLink]="['']" title="Home">Home</a></li>
+              <li><span>Contact us</span></li>
+            </ul>
+          </div>
+          <app-contact-form [fromPage]="'logoutuser'"></app-contact-form>
+        </div>
+        <div class="col-md-4 list_right">
+          <div class="sidebar_box blue_side_box contact_side_box">
+            <h3>Get In Touch</h3>
+            <p>Contact the staff at eWebList Directory Listings</p>
+            <a href="mailto:support@eweblist.com" title="Mail us">support@eweblist.com</a>
+            <ul class="d-flex social_icons">
+              <li><a title="facebook" target="_blank" href="https://www.facebook.com/EWebList-104260782059607"><i class="fab fa-facebook-f"></i></a></li>
+              <li><a title="instagram" target="_blank" href="https://www.instagram.com/eweblist/"><i class="fab fa-instagram"></i></a></li>
+              <li><a title="twitter" target="_blank" href="https://twitter.com/eweblist"><i class="fab fa-twitter"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-footer></app-footer>
+</div>

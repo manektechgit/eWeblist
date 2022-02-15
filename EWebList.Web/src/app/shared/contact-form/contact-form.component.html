@@ -1,0 +1,66 @@
+<div class="contct_form">
+  <form class="contact_form form_common_style" (ngSubmit)="onSubmit()" name="contactUsForm" [formGroup]="contactUsForm">
+    <div class="container">
+      <div class="row">
+        <div class="row">
+          <div class="col-xl-6">
+            <label>Subject <span>*</span></label>
+            <select class="form-control form-input custom-select" formControlName="SubjectId">
+              <option [ngValue]=null>Select Subject</option>
+              <option *ngFor="let dropdown of dropDownItem" [ngValue]="dropdown.DropDownListItemID">
+                {{dropdown.ItemName}}
+              </option>
+            </select>
+            <div class="text-danger"
+              *ngIf="f.SubjectId.invalid && (f.SubjectId.dirty || f.SubjectId.touched || isSubmit)">
+              <span *ngIf="f.SubjectId.errors.required">
+                Please select subject
+              </span>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <label>Name <span>*</span></label>
+            <input type="text" formControlName="Name" class="form-control form-input" placeholder="Enter your name">
+            <div class="text-danger" *ngIf="f.Name.invalid && (f.Name.dirty || f.Name.touched || isSubmit)">
+              <span *ngIf="f.Name.errors.required">
+                Please enter name
+              </span>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <label>Email address<span>*</span></label>
+            <input type="text" formControlName="Email" class="form-control form-input"
+              placeholder="Enter your email address">
+            <div class="text-danger" *ngIf="f.Email.invalid && (f.Email.dirty || f.Email.touched || isSubmit)">
+              <span *ngIf="f.Email.errors.required">
+                Enter email address
+              </span>
+              <span *ngIf="f.Email.errors?.pattern">
+                Please provide a valid email address
+              </span>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <label>Link (optional)</label>
+            <input type="text" formControlName="Link" class="form-control form-input" placeholder="Enter your link">
+          </div>
+          <div class="col-md-12">
+            <label>Message</label>
+            <textarea class="form-control form-input" formControlName="Message" rows="5" id="comment"
+              placeholder="Type your message here"></textarea>
+            <div class="text-danger" *ngIf="f.Message.invalid && (f.Message.dirty || f.Message.touched || isSubmit)">
+              <span *ngIf="f.Message.errors.required">
+                Please enter message
+              </span>
+            </div>
+          </div>
+          <div class="col-xl-6">
+          </div>
+          <div class="col-xl-6 text-md-right">
+            <button class="btn submit-btn" type="submit">Send message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

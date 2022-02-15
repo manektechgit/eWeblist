@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="row top-bar">
+    <div class="col-lg-8">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="breadcrumbs">
+          <li><a [routerLink]="['/user']" title="Dashboard">Dashboard</a></li>
+          <li><span>Setting</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card setting-middle bg-light shadow">
+        <form>
+          <div class="custom-switch" *ngFor="let item of userSetting">
+            <input type="checkbox" class="custom-control-input" id="{{item.SettingId}}"
+            [checked]="item.SettingValue" (change)="onChange($event.target.checked,item)">
+            <label class="custom-control-label" for="{{item.SettingId}}">{{item.Name}}</label>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

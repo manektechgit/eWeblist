@@ -1,0 +1,112 @@
+<div class="container-fluid">
+  <div class="row top-bar">
+    <div class="col-lg-8">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="breadcrumbs">
+          <li><a [routerLink]="['/user']" title="Home">Dashboard</a></li>
+          <li><span>Directory</span></li>
+        </ul>
+        <div class="page_sorting filter_category">
+          <select class="form-control custom-select" [(ngModel)]="SelectedCategoryId">
+            <option selected="" value="0">FILTER BY CATEGORY</option>
+            <option *ngFor="let category of categories" value="{{category.CategoryId}}">{{category.Name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 list_right">
+      <a class="btn_sub full_bt" [routerLink]="['/user/submit-site']">
+        <i class="fas fa-plus">
+        </i> Submit New site</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="list_box" *ngFor="let directory of directories | filterCategory:SelectedCategoryId;let i=index">
+        <!-- Directory Start -->
+        <div class="premium-icon-edit" *ngIf="directory.IsPremium">
+          <i class="fa fa-star" aria-hidden="true"></i>
+        </div>
+        <div class="list_box_inn d-md-flex justify-content-between">
+          <div class="dropdown edit-delete">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fas fa-ellipsis-h"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow">
+              <a class="dropdown-item" href="javascript:void(0);"
+                (click)="EditDirectory(directory.DirectoryId,directory.BusinessName)">Edit</a>
+              <a class="dropdown-item" href="javascript:void(0);" (click)="DeleteDirectory(directory)">Delete</a>
+            </div>
+          </div>
+          <div class="logo_box d-md-flex flex-md-wrap justify-content-md-start">
+            <div class="img_box">
+              <img src="{{directoryImageServerPath+directory.Logo}}" alt="{{directory.BusinessName}}" />
+            </div>
+            <div class="list_time d-md-flex flex-md-wrap align-items-md-end">
+              <h4>{{directory.CreatedDate | date : 'dd MMM'}}</h4>
+            </div>
+          </div>
+          <div class="content_box" (click)="InsertDirectoryClick(directory)">
+            <div class="content_inner">
+              <h2>{{directory.ListingHeadline}}</h2>
+              <p>{{directory.Description}}</p>
+            </div>
+            <div class="links_box">
+              <ul class="tag_txt list-unstyled d-flex flex-wrap align-items-center">
+                <ng-container *ngFor="let keywords of directory?.Keywords?.trim().split(',')">
+                  <li *ngIf="keywords !=''">{{keywords}}</li>
+                </ng-container>
+              </ul>
+            </div>
+            <div class="links_box d-md-flex align-items-center">
+              <div class="tag_txt">
+                <span>{{directory.BusinessName}}</span>
+              </div>
+            </div>
+            <div class="links_box d-md-flex align-items-center">
+              <div class="links">
+                <a href="{{directory.WebsiteUrl}}" target="_blank" title="{{directory.BusinessName}}"
+                  class="blue_link">{{directory.WebsiteUrl}}</a>
+              </div>
+            </div>
+            <div class="links_box d-md-flex align-items-center">
+              <div class="links">
+                <ng-container *ngIf="!directory.IsPremium && directory?.ExpireDate ==null">
+                  <a href="javascript:void(0);" class="red_link" ngbTooltip="Choose A Plan For this site"
+                    (click)="Upgrade(directory.DirectoryId)">Choose A Plan To Activate This Site</a>
+                </ng-container>
+                <ng-container *ngIf="directory?.ExpireDate !=null">
+                  <a href="javascript:void(0);" *ngIf="!directory?.IsExpired" class="red_link">Expiring on
+                    {{directory?.ExpireDate | date : 'dd MMM yyyy'}}</a>
+                  <a href="javascript:void(0);" *ngIf="directory?.IsExpired" class="red_link">Expired on
+                    {{directory?.ExpireDate | date : 'dd MMM yyyy'}}</a>
+
+                  <a href="javascript:void(0);" *ngIf="!directory?.IsPremium" class="blue_link" ngbTooltip="Click to upgrade to premium"
+                    (click)="Upgrade(directory.DirectoryId)">Renew/Upgrade To
+                    Premium</a>
+                  <a href="javascript:void(0);" *ngIf="directory?.IsPremium" class="blue_link" ngbTooltip="Click to upgrade to premium"
+                    (click)="Upgrade(directory.DirectoryId)">Renew</a>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Directory End -->
+      </div>
+    </div>
+    <div class="col-lg-4 list_right">
+      <div class="sidebar_box mt-0" *ngIf="leftCategories?.length > 0">
+        <h3 class="sidebar_toggle" (click)="ToggleSideBar()">{{siteLabel}}</h3>
+        <div class="sidebar_toggle_open" [ngClass]="isMyWesitesOpen ? 'show' : ''"
+          [ngStyle]="{'display': isMyWesitesOpen ? 'none' : 'block'}">
+          <ul>
+            <li *ngFor="let category of leftCategories">
+              <a href="javascript:void(0);" title="{{category.Name}}"
+                *ngIf="category.TotalDirectory > 0">{{category.Name}} <span>{{category.TotalDirectory}}</span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="row">
+  <div class="col-lg-10">
+    <div class="card admin-profile bg-light shadow mb-4">
+      <div class="custom-switch" style="align-self: flex-end;" *ngIf="addEditMode=='insert'">
+        <input type="checkbox" class="custom-control-input" id="addmore" [(ngModel)]="addMore">
+        <label class="custom-control-label" for="addmore">SAVE AND ADD NEW</label>
+      </div>
+      <div class="d-sm-flex justify-content-between">
+        <div class="userinfo">
+          <form class="form_common_style" (ngSubmit)="onSubmit()" name="subCategoryMasterForm"
+            [formGroup]="subCategoryMasterForm">
+            <div class="row">
+              <div class="col-xl-12">
+                <label>Select Category</label>
+                <select class="form-control form-input custom-select" formControlName="CategoryId">
+                  <option [ngValue]=null>Select category</option>
+                  <option *ngFor="let category of categories" [ngValue]="category.CategoryId">
+                    {{category.Name}}
+                  </option>
+                </select>
+                <div class="text-danger"
+                  *ngIf="f.CategoryId.invalid && (f.CategoryId.dirty || f.CategoryId.touched || isSubmit)">
+                  <span *ngIf="f.CategoryId.errors.required">
+                    Please select category
+                  </span>
+                </div>
+              </div>
+              <div class="col-12">
+                <label>Name </label>
+                <input type="text" formControlName="Name" class="form-control form-input"
+                  placeholder="Enter sub category name">
+                <div class="text-danger" *ngIf="f.Name.invalid && (f.Name.dirty || f.Name.touched || isSubmit)">
+                  <span *ngIf="f.Name.errors.required">
+                    Please enter sub category name
+                  </span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="upload_right">
+                  <label>Upload your Category Image</label>
+                  <div class="custom-file form-input">
+                    <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile"
+                      placeholder="Upload image" (change)="handleFileInput($event)">
+                    <label class="custom-file-label" for="validatedCustomFile">Upload image</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="customCheck1" formControlName="IsActive">
+                  <label class="custom-control-label" for="customCheck1">Active</label>
+                </div>
+              </div>
+              <br>
+              <br>
+              <br>
+              <div class="col-12 mt-3">
+                <button class="btn submit-btn" style="margin: 3px;" type="button"
+                  (click)="onSaveOrCancel('cancel')">Cancel</button> &nbsp;
+                <button class="btn submit-btn" style="margin: 3px;" type="submit">Save</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
